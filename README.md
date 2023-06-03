@@ -190,6 +190,23 @@ gn gen out/Release --args='is_debug=false'
 
 Here we generated build files for release (optimized) build, but you can generate a Debug build my removing `--args='is_debug=false' and running `gn gen out/Debug`
 
+If you want to thin down the dylibs from about 11MB to 8MB, you can disabled the non-Metal backends for a leaner build.
+
+Edit the out/Release/args.gn and add the following content:
+
+```
+angle_enable_d3d9 = false
+angle_enable_d3d11 = false
+angle_enable_gl = false
+angle_enable_null = false
+angle_enable_metal = true
+angle_enable_vulkan = false
+angle_enable_essl = false
+angle_enable_glsl = true
+is_debug = false
+is_component_build = false
+```
+
 **Step 3: Compile Angle**
 
 This step will take a hot minute. It took about 10 mins on my 2021 Macbook M1 Pro. The debug build was about half that time.
