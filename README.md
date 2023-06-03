@@ -5,11 +5,13 @@
 
 ## 1. Introduction
 
-If there's one thing I like more than graphics, it' fast graphics...
+If there's one thing I like more than computer graphics, it' fast computer graphics...
 
-By the end of this post, you'll know you how to build and link Google's ANGLE with Raylib, giving at least a 3x boost in raw frame-rate on Mac. In fact, its the same low-level graphics library that powers Google Chrome! (And any chromium based browsers)
+By the end of this post, you'll know you how to build and link Google's ANGLE with Raylib, giving at least a 3x boost in raw frame-rate on Macs with M1/M2 chips. In fact, its the same low-level graphics library that powers Google Chrome! (And any chromium based browsers)
 
 This tutorial assumes some basic knowledge of compiling C/C++ software and some comfort in the command line.
+
+**Prerequisites**
 
 You'll also need the followng prerequisites:
 
@@ -31,20 +33,21 @@ You'll also need the followng prerequisites:
 
 ## 2. Why use ANGLE anyway?
 
-It seem's everyone's got their own graphics API these days. Microsoft sees the future in Direct3D. Kronos (developer of the OpenGL and Vulkan specs) sees Vulkan as the next-gen solution. Apple on the other hand, true to their nature of building fullstack, hardware and software projects, choose freedom and flexibility and decided they too needed their own shiny accelerated graphics API - Metal
-(NVidia supports as many as it can, they just want to sell hardware.)
+It seem's everyone's got their own graphics API these days. Microsoft sees the future in Direct3D. Kronos (developer of the OpenGL and Vulkan specs) sees Vulkan as the next-gen solution. Apple on the other hand, true to their nature of building fullstack, hardware and software products, choose freedom and flexibility and decided they too needed their own shiny accelerated graphics API - Metal
 
-Now usually, OpenGL has a pretty good cross-platform support. And thats usually the go-to. But with since 2018, Apple basically deprecating OpenGL support in favor of pursuring Metal which can get about 10x more draw calls in the same time as OpenGL on modern Apple processors, specfically the ARM (M1 and M2) processors.
+NVidia supports as many as it can, they just want to sell hardware.
 
-With all these different APIs, abstraction layers are starting to popup. In fact, Google develops such an API thats present in all Chromium based browsers called ANGLE. It provides a compliant OpenGL ES 2.0 frontend with backends to all the major native graphics APIs. 
+Now usually, OpenGL has a pretty good cross-platform support. And thats usually the go-to for anything cross platform. But with Apple focusing on Metal and essentially deprecating OpenGL support in 2018, performance of the OpenGL drivers on Mac hasn't seen much love and likely won't in the future. The good news is, Metal can get about 10x more draw calls than OpenGL, especially on modern M1/M2 chips.
+
+With all these different APIs, abstraction layers are starting to pop up. In fact, Google develops such an API thats present in all Chromium based browsers called ANGLE. It provides a compliant OpenGL ES 2.0 frontend with backends to all the major native graphics APIs. 
 
 > In short, you can get HUGE speed boosts when using Metal through ANGLE on MacOS platforms. Usually double, tripple, or even more the framerate of OpenGL powered solutions.
 
 ## 3. Quickstart (Short Version Using ANGLE from your Browser)
 
-Shout out to [Peter0x44](https://github.com/Peter0x44) on github for point this out, but you can actually just grab ANGLE in the form of `libEGL.dylib` and `libGLESv2.dylib` from a Chromium based browser your probably already have!
+Shout out to [Peter0x44](https://github.com/Peter0x44) on Github and Raylib's Discord server for pointing this out, but you can actually just grab ANGLE in the form of `libEGL.dylib` and `libGLESv2.dylib` from a Chromium based browser your probably already have!
 
-Here we go.
+So here we go.
 
 **Step 1: Hiest `libEGL.dylib` and `libGLESv2.dylib` from Chrome**
 
@@ -99,9 +102,19 @@ A single `g++` or `gcc` command is fine for small projects, but for most project
 
 **Step 1: Folder setup**
 
-Go ahead and pick a root project on your compute. I suggest something like `~/code/raylib-angle` or something easy.
+Go ahead and pick a root project on your computer. I suggest something like `~/code/raylib-angle` or something easy.
 
 Put the following in the folder:
+
+```
+.
+├── CMakeLists.txt
+├── src
+│   └── main.cpp
+└── vendor
+```
+
+After we setup git submodules, and add some source code, it should look something like this:
 
 ```
 .
@@ -237,7 +250,7 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
     SetTargetFPS(60); 
-    
+
     while (!WindowShouldClose()) 
     {
         BeginDrawing();
@@ -252,177 +265,78 @@ int main(void)
 }
 ```
 
-
-### 4.4 Performance Testing
-### 5. Raylib cmake-starter (shamless plug)
-
-I recently discovered the amazing raylib ecosystem by Ramon Santiago (Github: raysan5) & Contributors. Raylib is a high performance, lightweight, self-contained, and extremely portable 2D/3D graphics library with easy input, audio, textures, fonts, 3D models, cameras, and more with 60+ language bindings.
-
-
-The primary motivation behind Raylib, was to make game programming fun and easy. Raylib isn't limited to games either. It doesn't impose a rigid engine or system. It's like the Python Flask of the graphics world, but with a few more optional batteries.
-
-In fact, I use raylib mostly for high-performance analytics visualization tools for a 5G/LTE Network Simulator I build for my day job, drawing hardware accelerated graphs, debuggers, and tools is a breeze.
-
-Enough with the evangelizing, let's get to work.
-
-## Why?
-
-
-
-
-## Whats in the Box?
-
-1. Quick-start with raylib and CMake
-2. Build and link Google ANGLE for huge speed boosts on Mac's with M1/M2 Chips.
-3. Shortcut and get ANGLE from your browser and link it.
-
-
-## Prerequisites
-
-While I'll try to be thorough, but I'll assume some familiarity with C/++, the basics of compiling software, and that you have the following tools:
-
-1. VS Code (recommended)
-2. Apple Developer Command Line Tools (required)
-3. Homebrew (recommended)
-4. Ninja `brew install ninja`
-5. CMake `brew install cmake`
-4. Python 3 (required)
-5. Git (required)
-
-
-
-
-## Getting Setting Up Submodules
-
-
-First, we'll add `raylib`, `raygui`, and `angle` as submodules.
-
-**Raylib**
-
-
-
-**Raygui**
-
-This stage is optional, but its nice to get something useable on the screen.
-
-```
-git submodule add https://github.com/raysan5/raylib.git vendor/raylib
-```
-
-**ANGLE**
-
-```
-git submodule add https://chromium.googlesource.com/angle/angle vendor/angle
-```
-
-**Initialize Submodules**
-
-```
-
-```
-
-## Building ANGLE
-
-We're using `cmake` for our build, but ANGLE, as a Google project, uses Googles ninja build system.
-
-Luckily, ANGLE comes with a bootstrapping script which graphs all of angle's dependancies.
-
-**Step 1: Bootstrap ANGLE**
-
-```
-cd vendor/angle
-python3 scripts/bootstrap.py
-gclient sync
-```
-
-**Step 2: Generate Ninja Build Files**
-
-```
-gn gen out/Release --args='is_debug=false'
-```
-
-Here we generated build files for release (optimized) build, but you can generate a Debug build my removing `--args='is_debug=false' and running `gn gen out/Debug`
-
-**Step 3: Compile Angle**
-
-This step will take a while. It took about 10 mins on my 2021 Macbook M1 Pro. The debug build was about half that time.
-
-```
-ninja -j 10 -k1 -C out/Release
-```
-
-Here I used all 10 CPUs. Use something appropriate for your system.
-
-When complete, the shared librarys (dylib's) you want are `libEGL.dylib` and `libGLESv2.dylib` found in the `vendor/angle/out/Release/` folder.
-
-### CMakeLists.txt
-
-In the root of your project, add a CMakeLists.txt file with the following contents. You can certainly compile and link simple projects with a single `gcc` command, but cmake makes modularly adding other third party code a bit nicer.
-
-```
-cmake_minimum_required(VERSION 3.16)
-
-project(raylib-angle)
-
-set(CMAKE_CXX_STANDARD 14)
-
-# Add the raylib submodule
-add_subdirectory(vendor/raylib)
-
-# Add out sources
-file(GLOB_RECURSE SOURCES "src/*.cpp")
-add_executable(${PROJECT_NAME} ${SOURCES})
-
-# Define path to ANGLE libraries
-set(ANGLE_LIBRARY_DIR vendor/angle/out/Release)
-
-# Find ANGLE libraries
-find_library(ANGLE_GLESv2_LIBRARY libGLESv2.dylib PATHS ${ANGLE_LIBRARY_DIR})
-find_library(ANGLE_EGL_LIBRARY libEGL.dylib PATHS ${ANGLE_LIBRARY_DIR})
-
-# Add raylib include directory
-target_include_directories(${PROJECT_NAME} PRIVATE vendor/raylib/src)
-
-# Add raygui include directory
-target_include_directories(${PROJECT_NAME} PRIVATE vendor/raygui/src)
-
-# Add ANGLE include directory
-target_include_directories(${PROJECT_NAME} PRIVATE vendor/angle/include)
-
-# Link against raylib and ANGLE libraries
-target_link_libraries(${PROJECT_NAME} raylib ${ANGLE_EGL_LIBRARY} ${ANGLE_GLESv2_LIBRARY})
-
-```
-
-### src/main.cpp
-
-Here we'll setup and the standard hello world for raylib
-
-
-
-## Building the Project
-
-Now the fun part, lets build with cmake!
-
-**Step 1: Generate Build files**
+**Step 3: Generate CMake Build Files**
 
 ```
 cmake -DCUSTOMIZE_BUILD=ON -DOPENGL_VERSION="ES 2.0" -B build
-```
-
-The `CUSTOMIZE_BUILD=ON` option is a raylib cmake option which allows some build customizations, and `-DOPENGL_VERSION="ES 2.0"` tell's raylib we want to use OpenGL ES 2.0 which is what will cause it to look and use the ANGLE libraries we've built.
-
-**Step 2: Build**
-
-Now we can run the actual build. This could be pretty quick since it's just building raylib, raylib (if you choose to add that), and bundled dependancies like `glfw`
-
-```
 cmake --build build
 ```
 
-**Troubleshooting**
+The flags `-DCUSTOMIZE_BUILD=ON -DOPENGL_VERSION="ES 2.0"` are key. They tell Tell raylib to look for an OpenGL ES implementation which ANGLE will provide.
 
-If you get an error like this:
+**Step 3: Validation**
+
+Here you can see can see
+```
+λ ~/code/projects/raylib-angle-test/ master* ./r
+INFO: Initializing raylib 4.6-dev
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1920 x 1080
+INFO:     > Screen size:  800 x 450
+INFO:     > Render size:  800 x 450
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL ES2.0 loaded successfully
+INFO: GL: Supported extensions count: 104
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Google Inc. (Apple)
+INFO:     > Renderer: ANGLE (Apple, Apple M1 Pro, OpenGL 4.1 Metal - 76.3)
+INFO:     > Version:  OpenGL ES 3.0.0 (ANGLE 2.1.21199 git hash: b0e9bbd79fb6)
+INFO:     > GLSL:     OpenGL ES GLSL ES 3.00 (ANGLE 2.1.21199 git hash: b0e9bbd79fb6)
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+INFO: SYSTEM: Decompress data: Comp. size: 1059 -> Original size: 131072
+INFO: TEXTURE: [ID 3] Texture loaded successfully (256x256 | GRAY_ALPHA | 1 mipmaps)
+```
+
+
+### 4.4 Performance
+
+**With ANGLE**
+
+Yes... Thats 11 thousand + FPS you see correctly. I even have a Chrome Browser running spotify and VS Code Running. Granted, raylib's not doing much here, but still!
+
+![with_angle](img/with_angle.png)
+
+**Without ANGLE**
+
+![without_angle](img/without_angle.png)
+
+
+Yeah... nuf said. Thats **nearly 4 times faster**. ANGLE is definately WORTH it on MacOS and M1/M2 Chips.
+
+### 6. Troubleshooting
+
+If you get an error like when compiling like this:
 
 ```
 error: incompatible pointer types assigning to 'int *' from 'bool *'
@@ -448,3 +362,22 @@ This casts `temp`, which is a `bool *` to an `int *`
 You could also change `bool temp` to `int temp`
 
 > I'll submit a pull request for this fix later. This may not be an issue by the time you read this.
+
+## Conclusion
+
+That's all for now! ANGLE may not gives the same speed improvement on other platforms like Windows and Linux, but i may be wrong. 
+And ANGLE support in Raylib is still experimental, but this pretty much confirms it works!
+
+I hope to be back with some more Raylib writeups. For now, Go checkout ray's awesome ecosystem show the project some love at:
+
+- https://www.raylib.com/
+- https://www.raylibtech.com/
+- https://github.com/raysan5/raylib
+- https://www.patreon.com/raylib
+- https://discord.gg/raylib
+
+If you'd like the starter pack code we setup today, you can find that at https://github.com/grplyler/raylib-cmake-starter
+
+Until next time! Keep programming!
+
+-Ryan "Vortigon"
