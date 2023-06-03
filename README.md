@@ -1,7 +1,18 @@
 # Building and Linking Google's ANGLE with Raylib on MacOS
 
-**Table of Contents**
-[TOC]
+## Table of Contents
+- [Building and Linking Google's ANGLE with Raylib on MacOS](#building-and-linking-google-s-angle-with-raylib-on-macos)
+  * [1. Introduction](#1-introduction)
+  * [2. Why use ANGLE anyway?](#2-why-use-angle-anyway-)
+  * [3. Quickstart (Short Version Using ANGLE from your Browser)](#3-quickstart--short-version-using-angle-from-your-browser-)
+  * [4. Slightly Longer Version](#4-slightly-longer-version)
+    + [4.1 Folder Structure & Setup](#41-folder-structure---setup)
+    + [4.2 Git submodules](#42-git-submodules)
+    + [4.2 Building Angle](#42-building-angle)
+    + [4.3 Building the Project](#43-building-the-project)
+    + [4.4 Performance](#44-performance)
+    + [6. Troubleshooting](#6-troubleshooting)
+  * [Conclusion](#conclusion)
 
 ## 1. Introduction
 
@@ -130,7 +141,7 @@ After we setup git submodules, and add some source code, it should look somethin
 
 ### 4.2 Git submodules
 
-While you can certainly link with raylib static builds, I like to keep everything bundled as source code you can compile without fuss. So lets add `raylib` and `raygui` if you're feeling adventerous.
+While you can certainly link with raylib static builds, I like to keep everything bundled as source code you can compile without fuss. So lets add `raylib` and `raygui` if you're feeling adventurous.
 
 **Add raylib as a submodule to `vender/raylib`**
 
@@ -161,7 +172,7 @@ Cool, now lets build ANGLE
 
 ### 4.2 Building Angle
 
-I haven't quite got this tied into my `CMakeLists.txt` yet since angle uses a seperate build system, `ninja` (which is crazy fast btw), so we'll build ANGLE seperately for now.
+I haven't quite got this tied into my `CMakeLists.txt` yet since angle uses a separate build system, `ninja` (which is crazy fast btw), so we'll build ANGLE separately for now.
 
 **Step 1: Bootstrap ANGLE**
 
@@ -189,7 +200,7 @@ ninja -j 10 -k1 -C out/Release
 
 Here I used all 10 CPUs. Use something appropriate for your system.
 
-When complete, the shared librarys (dylib's) you want are `libEGL.dylib` and `libGLESv2.dylib` found in the `vendor/angle/out/Release/` copy those too your project root: `~/code/raylib-angle` (or whatever yours is)
+When complete, the shared libraries (dylib's) you want are `libEGL.dylib` and `libGLESv2.dylib` found in the `vendor/angle/out/Release/` copy those too your project root: `~/code/raylib-angle` (or whatever yours is)
 
 ### 4.3 Building the Project
 
@@ -272,11 +283,12 @@ cmake -DCUSTOMIZE_BUILD=ON -DOPENGL_VERSION="ES 2.0" -B build
 cmake --build build
 ```
 
-The flags `-DCUSTOMIZE_BUILD=ON -DOPENGL_VERSION="ES 2.0"` are key. They tell Tell raylib to look for an OpenGL ES implementation which ANGLE will provide.
+The flags `-DCUSTOMIZE_BUILD=ON -DOPENGL_VERSION="ES 2.0"` are key. They tell Tell raylib to look for an OpenGL ES implementation which ANGLE will provide. You can find more about the cmake flags on the [Raylib Wiki](https://github.com/raysan5/raylib/wiki/CMake-Build-Options)
 
 **Step 3: Validation**
 
-Here you can see can see
+Here you can see can see our raylib project is using Googles OpenGL ES implementation backed by Metal.
+
 ```
 λ ~/code/projects/raylib-angle-test/ master* ./r
 INFO: Initializing raylib 4.6-dev
@@ -323,16 +335,17 @@ INFO: TEXTURE: [ID 3] Texture loaded successfully (256x256 | GRAY_ALPHA | 1 mipm
 
 **With ANGLE**
 
+![with_angle](img/with_angle.png)
+
 Yes... Thats 11 thousand + FPS you see correctly. I even have a Chrome Browser running spotify and VS Code Running. Granted, raylib's not doing much here, but still!
 
-![with_angle](img/with_angle.png)
 
 **Without ANGLE**
 
 ![without_angle](img/without_angle.png)
 
 
-Yeah... nuf said. Thats **nearly 4 times faster**. ANGLE is definately WORTH it on MacOS and M1/M2 Chips.
+Yeah... nuf said. Thats **nearly 4 times faster**. ANGLE is definitely WORTH it on MacOS and M1/M2 Chips.
 
 ### 6. Troubleshooting
 
@@ -365,8 +378,8 @@ You could also change `bool temp` to `int temp`
 
 ## Conclusion
 
-That's all for now! ANGLE may not gives the same speed improvement on other platforms like Windows and Linux, but i may be wrong. 
-And ANGLE support in Raylib is still experimental, but this pretty much confirms it works!
+That's all for now! ANGLE may not give the same speed improvement on other platforms like Windows and Linux, but I may be wrong. 
+ANGLE support in Raylib is still experimental, but this pretty much confirms it works!
 
 I hope to be back with some more Raylib writeups. For now, Go checkout ray's awesome ecosystem show the project some love at:
 
