@@ -24,7 +24,7 @@ This tutorial assumes some basic knowledge of compiling C/C++ software and some 
 
 **Prerequisites**
 
-You'll also need the followng prerequisites:
+You'll also need the following prerequisites:
 
 
 1. Apple Developer Command Line Tools (required)
@@ -52,7 +52,7 @@ Now usually, OpenGL has a pretty good cross-platform support. And thats usually 
 
 With all these different APIs, abstraction layers are starting to pop up. In fact, Google develops such an API thats present in all Chromium based browsers called ANGLE. It provides a compliant OpenGL ES 2.0 frontend with backends to all the major native graphics APIs. 
 
-> In short, you can get HUGE speed boosts when using Metal through ANGLE on MacOS platforms. Usually double, tripple, or even more the framerate of OpenGL powered solutions.
+> In short, you can get HUGE speed boosts when using Metal through ANGLE on MacOS platforms. Usually double, tipple, or even more the framerate of OpenGL powered solutions.
 
 ## 3. Quickstart (Short Version Using ANGLE from your Browser)
 
@@ -107,7 +107,7 @@ g++ -std=c++14 -I/path/to/raylib/include -o main main.cpp /path/to/raylib.a /pat
 
 ## 4. Slightly Longer Version
 
-A single `g++` or `gcc` command is fine for small projects, but for most projects, you're going to want a build system. We'll go with CMake since it seems to be the defactor standard for C/C++ projects.
+A single `g++` or `gcc` command is fine for small projects, but for most projects, you're going to want a build system. We'll go with CMake since it seems to be the defacto standard for C/C++ projects.
 
 ### 4.1 Folder Structure & Setup
 
